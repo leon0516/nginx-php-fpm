@@ -36,15 +36,15 @@ if [ ! -d "/var/www/html/.git" ]; then
    rm -Rf /var/www/html/*
    if [ ! -z "$GIT_BRANCH" ]; then
      if [ -z "$GIT_USERNAME" ] && [ -z "$GIT_PERSONAL_TOKEN" ]; then
-       git clone -b $GIT_BRANCH $GIT_REPO /var/www/html/ || exit 1
+       git clone --recursive -b $GIT_BRANCH $GIT_REPO /var/www/html/ || exit 1
      else
-       git clone -b ${GIT_BRANCH} https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html || exit 1
+       git clone --recursive -b ${GIT_BRANCH} https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html || exit 1
      fi
    else
      if [ -z "$GIT_USERNAME" ] && [ -z "$GIT_PERSONAL_TOKEN" ]; then
-       git clone $GIT_REPO /var/www/html/  || exit 1
+       git clone --recursive $GIT_REPO /var/www/html/ || exit 1
      else
-       git clone https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html || exit 1
+       git clone --recursive https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html || exit 1
      fi
    fi
    chown -Rf nginx.nginx /var/www/html
@@ -55,7 +55,10 @@ fi
 if [ -f "$WEBROOT/composer.lock" ]; then
   php composer.phar install
 fi
-
+# Try auto install for composer
+if [ -f "$WEBROOT/../composer.lock" ]; then
+  php composer.phar install
+fi
 # Enable custom nginx config files if they exist
 if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
   cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf
