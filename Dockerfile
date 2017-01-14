@@ -127,5 +127,26 @@ VOLUME /var/www/html
 
 EXPOSE 443 80
 
+ENV APP_NAME ss-panel
+ENV BASE_URL http://your.domain
+
+ENV DB_HOST 0.0.0.0
+ENV DB_DATABASE sspanel
+ENV DB_USERNAME sspanel
+ENV DB_PASSWORD sspanel
+
+ENV MAILGUN_KEY keyputhere
+ENV MAILGUN_DOMAIN your.domain
+ENV MAILGUN_SENDER sender
+
+ENV RADIUS_DB_HOST 0.0.0.0
+ENV RADIUS_DB_DATABASE radius
+ENV RADIUS_DB_USER radius
+ENV RADIUS_DB_PASSWORD radius
+ENV RADIUS_SECRET secret
+
+ENV GEETEST_ID geetestid
+ENV GEETEST_KEY geetestkey
+
 #CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 CMD ["/start.sh"]
